@@ -3,7 +3,7 @@ const { User } = require('../models');
 
 const router = express.Router();
 
-router.get('/', async(req, res, next) => {
+router.get('/signup', async(req, res, next) => {
     res.render('signup.html');
 })
 
