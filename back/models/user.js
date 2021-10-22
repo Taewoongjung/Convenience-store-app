@@ -16,10 +16,12 @@ module.exports = class User extends Sequelize.Model {
                 allowNULL: false,
             },
             provider: {
-                type: Sequelize.STRING(10)
+                type: Sequelize.STRING(10),
+                defaultValue: 'local'
             },
             status: {
-                type: Sequelize.BOOLEAN
+                type: Sequelize.STRING(1),
+                defaultValue: 'T'
             }
         }, {
             sequelize,
@@ -30,5 +32,8 @@ module.exports = class User extends Sequelize.Model {
             charset: 'utf8',
             collate: 'utf8_general_ci',
         })
+    }
+    static associate(db) {
+        db.User.hasMany(db.EventItemHistory);
     }
 };
