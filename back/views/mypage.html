@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>user</title>
+</head>
+<body>
+    <a href="/login">로그인</a>
+    <a href="/signup">회원가입</a>
+    <form method="post" action="/login/logout">
+        <a onclick="this.parentNode.submit();">로그아웃</a>
+    </form>
+
+    <h1>hello {{user}}</h1>
+</body>
+</html>
