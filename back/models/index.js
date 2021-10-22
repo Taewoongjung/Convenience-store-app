@@ -4,7 +4,8 @@ const config = require('../config/config')[env];
 const User = require('./user');
 const EventItem = require('./event_item');
 const EventItemHistory = require('./event_item_history');
-// const Domain = require('./domain');
+const EventItemLike = require('./event_item_likes');
+const Review = require('./review');
 
 const db = {};
 const sequelize = new Sequelize(
@@ -15,16 +16,19 @@ db.sequelize = sequelize;
 db.User = User;
 db.EventItem = EventItem;
 db.EventItemHistory = EventItemHistory;
-// db.Domain = Domain;
+db.EventItemLike = EventItemLike;
+db.Review = Review;
 
 User.init(sequelize);
 EventItem.init(sequelize);
 EventItemHistory.init(sequelize);
-// Domain.init(sequelize);
+EventItemLike.init(sequelize);
+Review.init(sequelize);
 
 User.associate(db);
 EventItem.associate(db);
 EventItemHistory.associate(db);
-// Domain.associate(db);
+EventItemLike.associate(db);
+Review.associate(db);
 
 module.exports = db;
