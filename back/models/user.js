@@ -12,7 +12,7 @@ module.exports = class User extends Sequelize.Model {
                 allowNULL: false,
             },
             password: {
-                type: Sequelize.STRING(50),
+                type: Sequelize.STRING(1000),
                 allowNULL: false,
             },
             provider: {
@@ -24,7 +24,6 @@ module.exports = class User extends Sequelize.Model {
         }, {
             sequelize,
             timestamps: true,
-            underscored: false,
             modelName: 'User',
             tableName: 'users',
             paranoid: true,

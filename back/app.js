@@ -11,6 +11,7 @@ dotenv.config();
 
 const indexRouter = require('./routes/index');
 const pagesRouter = require('./routes/pages');
+const authRouter = require('./routes/auth');
 
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
@@ -31,10 +32,19 @@ sequelize.sync({ force: false })
       console.error(err);
     });
 
+if (process.env.NODE_ENV === 'production') {
+    app.enable('trust proxy');
+    app.use(morgan('combined'));
+    app.use(helmet({ contentSecurityPolicy: false }));
+    app.use(hpp());
+} else {
+    app.use(morgan('dev'));
+}
 
-app.use(morgan('dev'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, './public')));
+app.use('/img', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser(process.env.COOKIE_SECRET));
 // app.use(session({
 //   resave: false,
@@ -51,6 +61,7 @@ app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/pages', pagesRouter);
+app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
   const error =  new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
