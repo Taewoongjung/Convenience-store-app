@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const sanitize = require('sanitize-html');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
@@ -8,13 +9,21 @@ const { User } = require('../models');
 const router = express.Router();
 
 router.post('/join', isNotLoggedIn, async (req, res, next) => {
-    const { email, nick, password } = req.body;
+    const { email, nick, password, password_re } = req.body;
     console.log("body : ", email, nick, password);
     try {
-        const exUser = await User.findOne({ where: {email} });
+        const exUser = await User.findOne({ where: { email: email } });
+        const exNick = await User.findOne({ where: { nickname: nick } });
         if (exUser) {
-            return res.redirect('/join?error=exist');
+            return res.send(`<script type="text/javascript">alert("이미 가입된 이메일입니다."); location.href="/pages/signup";</script>`);
         }
+        else if (exNick) {
+            return res.send(`<script type="text/javascript">alert("사용할 수 없는 닉네임입니다."); location.href="/pages/signup";</script>`);
+        }
+        else if (password !== password_re) {
+            return res.send(`<script type="text/javascript">alert("비밀번호가 맞지 않습니다."); location.href="/pages/signup";</script>`);
+        }
+        sanitize(password);
         const hash = await bcrypt.hash(password, 12);
         await User.create({
             email: email,
@@ -35,9 +44,9 @@ router.get('/token', isNotLoggedIn, async(req, res, next) => {
                 console.error(authError);
                 return next(authError);
             }
-            // if (info) {
-            //     return res.send(`<script type="text/javascript">alert("${info.message}"); location.href="/";</script>`);
-            // }
+            if (info) {
+                return res.send(`<script type="text/javascript">alert("${info.message}"); location.href="/";</script>`);
+            }
             return req.login(user, (loginError) => {
                 if (loginError) {
                     console.error(loginError);
