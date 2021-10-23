@@ -30,7 +30,7 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
 
 router.get('/token', isNotLoggedIn, async(req, res, next) => {
     try {
-        passport.authenticate('local', {session: false }, (authError, user, info) => {
+        passport.authenticate('local', (authError, user, info) => {
             if (authError) {
                 console.error(authError);
                 return next(authError);
@@ -38,11 +38,12 @@ router.get('/token', isNotLoggedIn, async(req, res, next) => {
             // if (info) {
             //     return res.send(`<script type="text/javascript">alert("${info.message}"); location.href="/";</script>`);
             // }
-            return req.login(user, { session: false }, (loginError) => {
+            return req.login(user, (loginError) => {
                 if (loginError) {
                     console.error(loginError);
                     return next(loginError);
                 }
+                console.log("@2: ", user.id);
                 const token = jwt.sign({
                     id: user.id,
                     nickname: user.nickname
@@ -58,7 +59,7 @@ router.get('/token', isNotLoggedIn, async(req, res, next) => {
                     token,
                 });
             });
-        })(req, res);
+        })(req, res, next);
 
         // const primaryKeyOfIt = await User.findOne({ where: { email: email }});
         //
