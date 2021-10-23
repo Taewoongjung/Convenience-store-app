@@ -1,7 +1,5 @@
 const passport = require('passport');
-const passportJWT = require("passport-jwt");
 const local = require('./localStrategy');
-const jwt = require('./localJwtStrategy');
 // const kakao = require('./kakaoStrategy');
 // const google = require('./googleStrategy');
 
@@ -19,7 +17,6 @@ module.exports = () => {
   });
 
   local();
-  jwt();
   // kakao();
   // google();
 };

@@ -1,7 +1,7 @@
 const express = require('express');
 const sanitize = require('sanitize-html');
 const bcrypt = require('bcrypt');
-const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const { isNotLoggedIn } = require('./middlewares');
 const { User } = require('../models');
 
 const router = express.Router();
