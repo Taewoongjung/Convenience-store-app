@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
@@ -21,24 +22,69 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
             password: hash,
         });
 
-        const primaryKeyOfIt = await User.findOne({ where: { email: email, nickname: nick }});
-
-        const token = jwt.sign({
-            id: primaryKeyOfIt.id
-        }, process.env.JWT_SECRET, {
-            expiresIn: '1m', // 1분
-            issuer: 'taewoongjung',
-        });
-        return res.json({
-            code: 200,
-            message: '토큰이 발급되었습니다',
-            userId: primaryKeyOfIt.id,
-            token,
-        });
     } catch (error) {
         console.log(error);
         return next(error);
     }
 });
+
+router.get('/token', isNotLoggedIn, async(req, res, next) => {
+    try {
+        // const { email, password } = req.query;
+        // console.log("body : ", email, password);
+        //
+        // const isUser = await User.findOne({where: {email: email, password: password }});
+        // if ()
+
+        passport.authenticate('local', (authError, user, info) => {
+            if (authError) {
+                console.error(authError);
+                return next(authError);
+            }
+            // if (info) {
+            //     return res.send(`<script type="text/javascript">alert("${info.message}"); location.href="/";</script>`);
+            // }
+            return req.login(user, (loginError) => {
+                if (loginError) {
+                    console.error(loginError);
+                    return next(loginError);
+                }
+                const token = jwt.sign({
+                    id: user.id,
+                    nickname: user.nickname
+                }, process.env.JWT_SECRET, {
+                    expiresIn: '1m', // 1분
+                    issuer: 'taewoongjung',
+                });
+                return res.json({
+                    code: 200,
+                    message: '토큰이 발급되었습니다',
+                    userId: user.id,
+                    nickname: user.nickname,
+                    token,
+                });
+            });
+        })(req, res);
+
+        // const primaryKeyOfIt = await User.findOne({ where: { email: email }});
+        //
+        // const token = jwt.sign({
+        //     id: primaryKeyOfIt.id
+        // }, process.env.JWT_SECRET, {
+        //     expiresIn: '1m', // 1분
+        //     issuer: 'taewoongjung',
+        // });
+        // return res.json({
+        //     code: 200,
+        //     message: '토큰이 발급되었습니다',
+        //     userId: primaryKeyOfIt.id,
+        //     token,
+        // });
+
+    } catch (error) {
+        console.log(error);
+        return next(error);
+    }
+})
 
 module.exports = router;
