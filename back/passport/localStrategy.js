@@ -1,9 +1,9 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
-const passportJWT = require('passport-jwt');
-const JWTStrategy   = passportJWT.Strategy;
-const ExtractJWT = passportJWT.ExtractJwt;
+// const passportJWT = require('passport-jwt');
+// const JWTStrategy   = passportJWT.Strategy;
+// const ExtractJWT = passportJWT.ExtractJwt;
 
 const bcrypt = require('bcrypt');
 
@@ -35,22 +35,22 @@ module.exports = () => {
   }));
 
   //JWT Strategy
-  passport.use(new JWTStrategy({
-        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey   : process.env.JWT_SECRET
-      }, async (jwtPayload, done) => {
-        try{
-          return UserModel.findOneById(jwtPayload.id)
-              .then(user => {
-                return done(null, user);
-              })
-              .catch(err => {
-                return done(err);
-              });
-        } catch (error) {
-          console.log(error);
-          next(error);
-        }
-      }
-  ));
+  // passport.use(new JWTStrategy({
+  //       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  //       secretOrKey   : process.env.JWT_SECRET
+  //     }, async (jwtPayload, done) => {
+  //       try{
+  //         return UserModel.findOneById(jwtPayload.id)
+  //             .then(user => {
+  //               return done(null, user);
+  //             })
+  //             .catch(err => {
+  //               return done(err);
+  //             });
+  //       } catch (error) {
+  //         console.log(error);
+  //         next(error);
+  //       }
+  //     }
+  // ));
 };

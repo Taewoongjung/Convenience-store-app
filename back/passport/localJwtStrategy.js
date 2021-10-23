@@ -1,27 +1,28 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const passportJWT = require("passport-jwt").Strategy;
-// const JWTStrategy = passportJWT.Strategy;
-const { ExtractJwt } = passportJWT;
+const passportJWT = require('passport-jwt');
+const JWTStrategy   = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
 
 const { User } = require('../models');
 
 module.exports = () => {
-  passport.use(new passportJWT({
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: global.config.secret,
-  }, async (payload, done) => {
-    try {
-      const exUser = await User.findOne({ email: payload.email });
-      console.log("@ : ", payload.email);
-      if (!exUser) {
-        return done(null, false, { message: '유저가 일치하지 않습니다.' });
-      } else {
-        done(null, false, { message: '가입되지 않은 회원입니다.' });
+  passport.use(new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+        secretOrKey   : process.env.JWT_SECRET
+      }, async (jwtPayload, done) => {
+        try{
+          return UserModel.findOneById(jwtPayload.id)
+              .then(user => {
+                return done(null, user);
+              })
+              .catch(err => {
+                return done(err);
+              });
+        } catch (error) {
+          console.log(error);
+          next(error);
+        }
       }
-    } catch (error) {
-      console.error(error);
-      done(error);
-    }
-  }));
+  ));
 };

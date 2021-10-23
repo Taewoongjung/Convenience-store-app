@@ -19,7 +19,7 @@ module.exports = () => {
   });
 
   local();
-  // jwt();
+  jwt();
   // kakao();
   // google();
 };
