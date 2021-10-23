@@ -37,7 +37,6 @@ module.exports = class User extends Sequelize.Model {
             charset: 'utf8',
             collate: 'utf8_general_ci',
         })
-        User.removeAttribute('id');
     }
     static associate(db) {
         db.User.hasMany(db.EventItemHistory);

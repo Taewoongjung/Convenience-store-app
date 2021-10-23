@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
   try {
     const user = await User.findOne({
-      where: { id: req.user && req.user.id || null },
+      where: { user_id: req.user && req.user.user_id || null },
       // include: { model: Domain },
     });
     res.render('login', {
@@ -22,7 +22,7 @@ router.get('/', async (req, res, next) => {
 // router.post('/domain', async (req, res, next) => {
 //   try {
 //     await Domain.create({
-//       UserId: req.user.id,
+//       UserId: req.user.user_id,
 //       host: req.body.host,
 //       type: req.body.type,
 //       clientSecret: uuidv4(),

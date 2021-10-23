@@ -37,8 +37,8 @@ module.exports = class Review extends Sequelize.Model {
             charset: 'utf8',
             collate: 'utf8_general_ci',
         });
-        Review.removeAttribute('id');
-        Review.removeAttribute('deletedAt');
+        // Review.removeAttribute('id');
+        // Review.removeAttribute('deletedAt');
     }
     static associate(db) {
         db.Review.belongsTo(db.User);

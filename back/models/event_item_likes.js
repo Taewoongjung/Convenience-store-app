@@ -25,7 +25,7 @@ module.exports = class EventItemLike extends Sequelize.Model {
             charset: 'utf8',
             collate: 'utf8_general_ci',
         })
-        EventItemLike.removeAttribute('id');
+        // EventItemLike.removeAttribute('id');
     }
     static associate(db) {
         db.EventItemLike.belongsTo(db.User);

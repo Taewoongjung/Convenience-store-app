@@ -48,7 +48,7 @@ module.exports = class EventItem extends Sequelize.Model {
             charset: 'utf8',
             collate: 'utf8_general_ci',
         })
-        EventItem.removeAttribute('id');
+        // EventItem.removeAttribute('id');
     }
     static associate(db) {
         db.EventItem.hasMany(db.EventItemHistory);
