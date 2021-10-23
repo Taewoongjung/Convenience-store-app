@@ -9,7 +9,7 @@ const { User } = require('../models');
 const router = express.Router();
 
 router.post('/join', isNotLoggedIn, async (req, res, next) => {
-    const { email, nick, password, password_re } = req.body;
+    const { email, nick, password } = req.body;
     console.log("body : ", email, nick, password);
     try {
         const exUser = await User.findOne({ where: { email: email } });
@@ -19,9 +19,6 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
         }
         else if (exNick) {
             return res.send(`<script type="text/javascript">alert("사용할 수 없는 닉네임입니다."); location.href="/pages/signup";</script>`);
-        }
-        else if (password !== password_re) {
-            return res.send(`<script type="text/javascript">alert("비밀번호가 맞지 않습니다."); location.href="/pages/signup";</script>`);
         }
         sanitize(password);
         const hash = await bcrypt.hash(password, 12);
