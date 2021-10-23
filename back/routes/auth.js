@@ -32,6 +32,7 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
         return res.json({
             code: 200,
             message: '토큰이 발급되었습니다',
+            userId: primaryKeyOfIt.id,
             token,
         });
     } catch (error) {
