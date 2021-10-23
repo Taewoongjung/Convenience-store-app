@@ -3,6 +3,11 @@ const Sequelize = require('sequelize');
 module.exports = class Review extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
+            review_id: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
             item_name: {
                 type: Sequelize.STRING(100),
                 allowNull: false
@@ -28,12 +33,15 @@ module.exports = class Review extends Sequelize.Model {
             timestamps: true,
             modelName: 'Review',
             tableName: 'reviews',
-            paranoid: true,
+            underscored: true,
             charset: 'utf8',
             collate: 'utf8_general_ci',
-        })
+        });
+        Review.removeAttribute('id');
+        Review.removeAttribute('deletedAt');
     }
     static associate(db) {
         db.Review.belongsTo(db.User);
+        db.Review.hasMany(db.ReviewHistory);
     }
 };

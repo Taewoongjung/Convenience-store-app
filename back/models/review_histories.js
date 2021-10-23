@@ -1,16 +1,12 @@
 const Sequelize = require('sequelize');
 
-module.exports = class EventItemHistory extends Sequelize.Model {
+module.exports = class ReviewHistory extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
-            event_item_history_id: {
+            review_history_id: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true
-            },
-            item_name: {
-                type: Sequelize.STRING(100),
-                allowNull: false
             },
             status: {
                 type: Sequelize.STRING(1),
@@ -19,16 +15,16 @@ module.exports = class EventItemHistory extends Sequelize.Model {
         }, {
             sequelize,
             timestamps: true,
-            modelName: 'EventItemHistory',
-            tableName: 'event_item_histories',
+            modelName: 'ReviewHistory',
+            tableName: 'review_histories',
             underscored: true,
             charset: 'utf8',
             collate: 'utf8_general_ci',
         })
-        EventItemHistory.removeAttribute('id');
+        ReviewHistory.removeAttribute('id');
     }
     static associate(db) {
-        db.EventItemHistory.belongsTo(db.EventItem);
-        db.EventItemHistory.belongsTo(db.User);
+        db.ReviewHistory.belongsTo(db.User);
+        db.ReviewHistory.belongsTo(db.Review);
     }
 };

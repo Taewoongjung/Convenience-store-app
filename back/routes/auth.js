@@ -9,11 +9,11 @@ const { User } = require('../models');
 const router = express.Router();
 
 router.post('/join', isNotLoggedIn, async (req, res, next) => {
-    const { email, nick, password } = req.body;
-    console.log("body : ", email, nick, password);
+    const { email, nickname, password } = req.body;
+    console.log("body : ", email, nickname, password);
     try {
         const exUser = await User.findOne({ where: { email: email } });
-        const exNick = await User.findOne({ where: { nickname: nick } });
+        const exNick = await User.findOne({ where: { nickname: nickname } });
         if (exUser) {
             return res.send(`<script type="text/javascript">alert("이미 가입된 이메일입니다."); location.href="/pages/signup";</script>`);
         }
@@ -24,17 +24,20 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
         const hash = await bcrypt.hash(password, 12);
         await User.create({
             email: email,
-            nickname: nick,
+            nickname: nickname,
             password: hash,
         });
-
+        return res.json({
+            code: 200,
+            mssage: "회원가입 완료"
+        });
     } catch (error) {
         console.log(error);
         return next(error);
     }
 });
 
-router.get('/token', isNotLoggedIn, async(req, res, next) => {
+router.post('/token', isNotLoggedIn, async(req, res, next) => {
     try {
         passport.authenticate('local', (authError, user, info) => {
             if (authError) {
@@ -66,21 +69,6 @@ router.get('/token', isNotLoggedIn, async(req, res, next) => {
                 });
             });
         })(req, res, next);
-
-        // const primaryKeyOfIt = await User.findOne({ where: { email: email }});
-        //
-        // const token = jwt.sign({
-        //     id: primaryKeyOfIt.id
-        // }, process.env.JWT_SECRET, {
-        //     expiresIn: '1m', // 1분
-        //     issuer: 'taewoongjung',
-        // });
-        // return res.json({
-        //     code: 200,
-        //     message: '토큰이 발급되었습니다',
-        //     userId: primaryKeyOfIt.id,
-        //     token,
-        // });
 
     } catch (error) {
         console.log(error);

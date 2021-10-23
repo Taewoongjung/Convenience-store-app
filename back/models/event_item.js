@@ -3,6 +3,11 @@ const Sequelize = require('sequelize');
 module.exports = class EventItem extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
+            event_item_id: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
             item_name: {
                 type: Sequelize.STRING(100),
                 allowNull: false
@@ -39,10 +44,11 @@ module.exports = class EventItem extends Sequelize.Model {
             timestamps: true,
             modelName: 'EventItem',
             tableName: 'event_items',
-            paranoid: true,
+            underscored: true,
             charset: 'utf8',
             collate: 'utf8_general_ci',
         })
+        EventItem.removeAttribute('id');
     }
     static associate(db) {
         db.EventItem.hasMany(db.EventItemHistory);
