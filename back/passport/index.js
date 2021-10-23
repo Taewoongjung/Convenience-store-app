@@ -1,4 +1,5 @@
 const passport = require('passport');
+const passportJWT = require("passport-jwt");
 const local = require('./localStrategy');
 // const kakao = require('./kakaoStrategy');
 // const google = require('./googleStrategy');

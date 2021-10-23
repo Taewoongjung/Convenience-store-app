@@ -30,13 +30,7 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
 
 router.get('/token', isNotLoggedIn, async(req, res, next) => {
     try {
-        // const { email, password } = req.query;
-        // console.log("body : ", email, password);
-        //
-        // const isUser = await User.findOne({where: {email: email, password: password }});
-        // if ()
-
-        passport.authenticate('local', (authError, user, info) => {
+        passport.authenticate('local', {session: false }, (authError, user, info) => {
             if (authError) {
                 console.error(authError);
                 return next(authError);
@@ -44,7 +38,7 @@ router.get('/token', isNotLoggedIn, async(req, res, next) => {
             // if (info) {
             //     return res.send(`<script type="text/javascript">alert("${info.message}"); location.href="/";</script>`);
             // }
-            return req.login(user, (loginError) => {
+            return req.login(user, { session: false }, (loginError) => {
                 if (loginError) {
                     console.error(loginError);
                     return next(loginError);
