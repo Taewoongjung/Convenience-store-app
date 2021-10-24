@@ -83,5 +83,17 @@ router.get('/kakao/callback', passport.authenticate('kakao', {
     });
 });
 
+router.get('/google', passport.authenticate('google', { scope: [
+        'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/plus.login',
+        'https://www.googleapis.com/auth/blogger'],
+    accessType: 'offline', approvalPrompt: 'force'})
+);
+router.get('/google/callback', passport.authenticate('google', {
+    failureRedirect: '/',  // google 로그인 실패
+}), (req, res) => {
+    res.redirect('/');  // google 로그인 성공
+});
 
 module.exports = router;

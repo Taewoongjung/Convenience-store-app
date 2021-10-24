@@ -1,5 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const {OAuth2Client} = require('google-auth-library');
+// const client = new OAuth2Client(process.env.GOOGLE_ID);
 
 const User = require('../models/user');
 
@@ -7,13 +9,10 @@ module.exports = () => {
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_ID,
         clientSecret: process.env.GOOGLE_SECRET,
-        tokenURL: process.env.GOOGLE_TOKEN,
-        callbackURL: '/auth/google/callback',
+        callbackURL: '/login/google/callback',
     }, async (accessToken, refreshToken, profile, done) => {
-
         console.log('google profile', profile);
-
-        try { // 회원 가입과 로그인이 동시에 일어남
+        try {
             const exUser = await User.findOne({
                 where: { snsId: profile.id, provider: 'google' },
             });
