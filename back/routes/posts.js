@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const AWS = require('aws-sdk');
 const multerS3 = require('multer-s3');
-const { User, Review } = require('../models');
+const { User, Review, ReviewImage } = require('../models');
 const { verifyToken } = require('./middlewares');
 const router = express.Router();
 
@@ -44,7 +44,17 @@ router.post('/', verifyToken, upload2.none(), async(req, res, next) => {
             item_price: b,
             item_star_score, c,
             cs_brand: d,
-        })
+        });
+
+        const LatestPkOfReview = await Review.findOne({
+            order: [ [ 'createdAt', 'DESC' ]],
+        });
+
+        const postImage = await ReviewImage.create({
+            image_src: req.body.url,
+            review_review_id: LatestPkOfReview.review_id +1,
+        });
+
         return res.json({
             code: 200,
             mssage: "리뷰 등록 완료",

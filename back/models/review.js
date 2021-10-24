@@ -24,6 +24,10 @@ module.exports = class Review extends Sequelize.Model {
                 type: Sequelize.STRING(10),
                 allowNull: false
             },
+            category: {
+                type: Sequelize.STRING(10),
+                allowNull: false
+            },
             status: {
                 type: Sequelize.STRING(1),
                 defaultValue: 'T'
@@ -41,5 +45,6 @@ module.exports = class Review extends Sequelize.Model {
     static associate(db) {
         db.Review.belongsTo(db.User);
         db.Review.hasMany(db.ReviewHistory);
+        db.Review.hasMany(db.ReviewImage);
     }
 };

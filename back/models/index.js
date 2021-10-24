@@ -7,6 +7,7 @@ const EventItemHistory = require('./event_item_history');
 const EventItemLike = require('./event_item_likes');
 const Review = require('./review');
 const ReviewHistory = require('./review_histories');
+const ReviewImage = require('./review_images');
 
 const db = {};
 const sequelize = new Sequelize(
@@ -20,6 +21,7 @@ db.EventItemHistory = EventItemHistory;
 db.EventItemLike = EventItemLike;
 db.Review = Review;
 db.ReviewHistory = ReviewHistory;
+db.ReviewImage = ReviewImage;
 
 User.init(sequelize);
 EventItem.init(sequelize);
@@ -27,6 +29,7 @@ EventItemHistory.init(sequelize);
 EventItemLike.init(sequelize);
 Review.init(sequelize);
 ReviewHistory.init(sequelize);
+ReviewImage.init(sequelize);
 
 User.associate(db);
 EventItem.associate(db);
@@ -34,5 +37,6 @@ EventItemHistory.associate(db);
 EventItemLike.associate(db);
 Review.associate(db);
 ReviewHistory.associate(db);
+ReviewImage.associate(db);
 
 module.exports = db;
