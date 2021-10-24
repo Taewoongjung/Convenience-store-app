@@ -23,7 +23,7 @@ const upload = multer({  // multer 설정
     limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-router.post('/review', verifyToken, upload.single('img'), async(req, res, next) => {
+router.post('/img', verifyToken, upload.single('img'), async(req, res, next) => {
     try {
         console.log(req.file);
         const originalUrl = req.file.location;

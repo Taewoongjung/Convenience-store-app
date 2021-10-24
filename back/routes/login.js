@@ -30,11 +30,14 @@ router.post('/', isNotLoggedIn, async(req, res, next) => {
                     issuer: 'taewoongjung',
                 });
                 return res.json({
+                    result: {
+                        userId: user.user_id,
+                        nickname: user.nickname,
+                        token,
+                    },
+                    isSuccess: 'true',
                     code: 200,
-                    message: '토큰이 발급되었습니다',
-                    userId: user.user_id,
-                    nickname: user.nickname,
-                    token,
+                    message: '로그인 성공'
                 });
             });
         })(req, res, next);

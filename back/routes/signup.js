@@ -27,7 +27,7 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {
         });
         return res.json({
             code: 200,
-            mssage: "회원가입 완료"
+            mssage: "회원가입 완료",
         });
     } catch (error) {
         console.log(error);
