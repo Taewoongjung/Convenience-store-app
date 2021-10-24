@@ -38,22 +38,22 @@ router.post('/img', verifyToken, upload.single('img'), async(req, res, next) => 
 const upload2 = multer();
 router.post('/', verifyToken, upload2.none(), async(req, res, next) => {
     try {
-        const { a, b, c, d } = req.body;
+        const { item_name, item_price, item_star_score, cs_brand, category, content, url } = req.body;
         const post = await Review.create({
-            item_name: a,
-            item_price: b,
-            item_star_score, c,
-            cs_brand: d,
+            item_name: item_name,
+            item_price: item_price,
+            item_star_score: item_star_score,
+            cs_brand: cs_brand,
+            category: category,
+            content: content
         });
 
-        const LatestPkOfReview = await Review.findOne({
-            order: [ [ 'createdAt', 'DESC' ]],
-        });
-
+        const LatestPkOfReview = await Review.findOne({ order: [ [ 'createdAt', 'DESC' ]] });
         const postImage = await ReviewImage.create({
             image_src: req.body.url,
             review_review_id: LatestPkOfReview.review_id +1,
         });
+        console.log("@@@ check: ", postImage);
 
         return res.json({
             code: 200,

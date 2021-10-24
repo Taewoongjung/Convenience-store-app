@@ -28,6 +28,9 @@ module.exports = class Review extends Sequelize.Model {
                 type: Sequelize.STRING(10),
                 allowNull: false
             },
+            content: {
+                type: Sequelize.STRING(1000),
+            },
             status: {
                 type: Sequelize.STRING(1),
                 defaultValue: 'T'

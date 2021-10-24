@@ -1,6 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const {OAuth2Client} = require('google-auth-library');
+// const {OAuth2Client} = require('google-auth-library');
 // const client = new OAuth2Client(process.env.GOOGLE_ID);
 
 const User = require('../models/user');
