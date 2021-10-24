@@ -61,7 +61,7 @@ router.post('/', isNotLoggedIn, async(req, res, next) => {
 router.get('/kakao', passport.authenticate('kakao'));
 router.get('/kakao/callback', passport.authenticate('kakao', {
     failureRedirect: '/',  // kakao 로그인 실패
-}), async (req, res) => {
+}), (req, res) => {
     console.log("@: ", req.user.user_id);
 
     const token = jwt.sign({
