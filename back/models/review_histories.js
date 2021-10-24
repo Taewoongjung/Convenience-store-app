@@ -21,7 +21,6 @@ module.exports = class ReviewHistory extends Sequelize.Model {
             charset: 'utf8',
             collate: 'utf8_general_ci',
         })
-        // ReviewHistory.removeAttribute('id');
     }
     static associate(db) {
         db.ReviewHistory.belongsTo(db.User);

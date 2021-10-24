@@ -26,7 +26,7 @@ router.post('/', isNotLoggedIn, async(req, res, next) => {
                     user_id: user.user_id,
                     nickname: user.nickname
                 }, process.env.JWT_SECRET, {
-                    expiresIn: '1m', // 1분
+                    expiresIn: '7m', // 1분
                     issuer: 'taewoongjung',
                 });
                 return res.json({

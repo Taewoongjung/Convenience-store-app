@@ -25,7 +25,6 @@ module.exports = class EventItemHistory extends Sequelize.Model {
             charset: 'utf8',
             collate: 'utf8_general_ci',
         })
-        // EventItemHistory.removeAttribute('id');
     }
     static associate(db) {
         db.EventItemHistory.belongsTo(db.EventItem);
