@@ -6,7 +6,7 @@ const { User } = require('../models');
 module.exports = () => {
   passport.use(new KakaoStrategy({
     clientID: process.env.KAKAO_ID,
-    callbackURL: '/auth/kakao/callback',
+    callbackURL: '/login/kakao/callback',
   }, async (accessToken, refreshToken, profile, done) => {
     try {
       const exUser = await User.findOne({ where: { snsId: profile.id, provider: 'kakao' } });
@@ -14,8 +14,8 @@ module.exports = () => {
         done(null, exUser);
       } else {
         const newUser = await User.create({
-          email: profile._json && profile._json.kaccount_email,
-          nick: profile.displayName,
+          email: profile._json && profile._json.account_email,
+          nickname: profile.displayName,
           snsId: profile.id,
           provider: 'kakao',
         });

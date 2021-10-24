@@ -13,8 +13,19 @@ router.post('/', isNotLoggedIn, async(req, res, next) => {
                 console.error(authError);
                 return next(authError);
             }
-            if (info) {
-                return res.send(`<script type="text/javascript">alert("${info.message}"); location.href="/";</script>`);
+            console.log("?? : ", info.code);
+            if (info.code === 203) {
+                return res.json({
+                    isSuccess: false,
+                    code: 203,
+                    message: '가입되지 않은 회원입니다.'
+                });
+            } else if (info.code === 204) {
+                return res.json({
+                    isSuccess: false,
+                    code: 204,
+                    message: '비밀번호가 일치하지 않습니다.'
+                });
             }
             return req.login(user, (loginError) => {
                 if (loginError) {
@@ -46,5 +57,31 @@ router.post('/', isNotLoggedIn, async(req, res, next) => {
         return next(error);
     }
 });
+
+router.get('/kakao', passport.authenticate('kakao'));
+router.get('/kakao/callback', passport.authenticate('kakao', {
+    failureRedirect: '/',  // kakao 로그인 실패
+}), async (req, res) => {
+    console.log("@: ", req.user.user_id);
+
+    const token = jwt.sign({
+        user_id: req.user.user_id,
+        nickname: req.user.nickname,
+    }, process.env.JWT_SECRET, {
+        expiresIn: '7m', // 1분
+        issuer: 'taewoongjung',
+    });
+    return res.json({
+        result: {
+            userId: req.user.user_id,
+            nickname: req.user.nickname,
+            token,
+        },
+        isSuccess: 'true',
+        code: 201,
+        message: '카카오 로그인 성공'
+    });
+});
+
 
 module.exports = router;
